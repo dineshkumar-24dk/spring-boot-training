@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' | StudentHub'">Student Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/}"><span class="brand-mark">S</span> StudentHub</a>
+    <span class="top-label">STUDENT MANAGEMENT SYSTEM</span>
+</header>
+<main class="form-container">
+    <a class="back-link" th:href="@{/}">← Back to students</a>
+    <section class="form-panel">
+        <p class="eyebrow">STUDENT RECORD</p>
+        <h1 th:text="${pageTitle}">Add Student</h1>
+        <p class="subtitle">Enter the student information below.</p>
+        <form th:object="${student}" th:action="${student.id == null} ? @{/students} : @{/students/update/{id}(id=${student.id})}" method="post">
+            <div class="field">
+                <label for="name">Full name</label>
+                <input id="name" type="text" th:field="*{name}" placeholder="e.g. Arun Kumar" required>
+                <small class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+            </div>
+            <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" type="email" th:field="*{email}" placeholder="name@example.com" required>
+                <small class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                <small class="error" th:if="${emailError}" th:text="${emailError}"></small>
+            </div>
+            <div class="field">
+                <label for="course">Course</label>
+                <input id="course" type="text" th:field="*{course}" placeholder="e.g. Computer Science" required>
+                <small class="error" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></small>
+            </div>
+            <div class="form-actions">
+                <a class="btn btn-secondary" th:href="@{/}">Cancel</a>
+                <button class="btn btn-primary" type="submit">Save Student</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

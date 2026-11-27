@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentHub | Student Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/}"><span class="brand-mark">S</span> StudentHub</a>
+    <span class="top-label">STUDENT MANAGEMENT SYSTEM</span>
+</header>
+<main class="container">
+    <section class="hero">
+        <div>
+            <p class="eyebrow">DASHBOARD</p>
+            <h1>Manage your students</h1>
+            <p class="subtitle">Keep student records organized in one simple place.</p>
+        </div>
+        <a class="btn btn-primary" th:href="@{/students/new}"><span>＋</span> Add Student</a>
+    </section>
+
+    <div class="alert success" th:if="${success}" th:text="${success}"></div>
+
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-icon">♧</div>
+            <div><p>Total students</p><strong th:text="${studentCount}">0</strong></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue">▤</div>
+            <div><p>Database</p><strong class="status-text">Connected</strong></div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div><h2>Student directory</h2><p>All registered student details</p></div>
+            <span class="count-pill" th:text="${studentCount} + ' records'">0 records</span>
+        </div>
+        <div class="table-wrap" th:if="${!students.isEmpty()}">
+            <table>
+                <thead><tr><th>STUDENT</th><th>EMAIL ADDRESS</th><th>COURSE</th><th class="actions-head">ACTIONS</th></tr></thead>
+                <tbody>
+                <tr th:each="student : ${students}">
+                    <td><div class="student-cell"><span class="avatar" th:text="${#strings.substring(student.name,0,1).toUpperCase()}">S</span><span class="student-name" th:text="${student.name}">Student</span></div></td>
+                    <td class="muted" th:text="${student.email}">student@email.com</td>
+                    <td><span class="course-pill" th:text="${student.course}">Course</span></td>
+                    <td class="actions">
+                        <a class="action-link" th:href="@{/students/edit/{id}(id=${student.id})}">Edit</a>
+                        <form th:action="@{/students/delete/{id}(id=${student.id})}" method="post" onsubmit="return confirm('Delete this student?')">
+                            <button class="delete-link" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${students.isEmpty()}">
+            <div class="empty-icon">＋</div><h3>No students yet</h3>
+            <p>Add your first student to get started.</p>
+            <a class="btn btn-primary" th:href="@{/students/new}">Add first student</a>
+        </div>
+    </section>
+    <footer>StudentHub <span>•</span> Spring Boot + MySQL</footer>
+</main>
+</body>
+</html>
